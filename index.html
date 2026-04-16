@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>XENOS — Production Bible</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --crimson:    #8B0000;
+    --blood:      #A82020;
+    --rust:       #7A3520;
+    --terracotta: #A0573A;
+    --clay:       #C08060;
+    --blush:      #D4A090;
+    --teal:       #2D7A78;
+    --slate:      #6A8090;
+    --forest:     #1E5248;
+    --midnight:   #1A2540;
+    --void:       #080A10;
+    --parchment:  #F2E8D8;
+    --gold:       #C8A050;
+    --amber:      #D4820A;
+    --fog:        rgba(242,232,216,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--void);
+    color: var(--parchment);
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(139,0,0,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(30,82,72,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 55% 50%, rgba(26,37,64,0.4) 0%, transparent 70%),
+      var(--void);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(45,122,120,0.015) 80px, rgba(45,122,120,0.015) 81px),
+      repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(45,122,120,0.015) 80px, rgba(45,122,120,0.015) 81px);
+    pointer-events: none;
+  }
+
+  .cover-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 10px;
+    color: var(--teal);
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    border: 1px solid rgba(45,122,120,0.3);
+    padding: 8px 24px;
+  }
+
+  .cover-main {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-film {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: var(--clay);
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(56px, 11vw, 130px);
+    font-weight: 900;
+    color: transparent;
+    background: linear-gradient(150deg, var(--crimson) 0%, var(--clay) 35%, var(--parchment) 55%, var(--teal) 80%, var(--midnight) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 1;
+    letter-spacing: 16px;
+  }
+
+  .cover-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--parchment);
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .cover-sub2 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--clay);
+  }
+
+  .cover-rule {
+    width: 300px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blood), var(--teal), transparent);
+    margin: 40px auto;
+  }
+
+  .cover-contents {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--slate);
+    line-height: 2.6;
+    text-align: center;
+  }
+
+  .cover-contents span { color: var(--clay); }
+
+  /* ── NAV / CHAPTER BREAKS ── */
+  .chapter {
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 40px 60px;
+    position: relative;
+  }
+
+  .chapter-num {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 10px;
+    color: var(--teal);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .chapter-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(30px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--parchment);
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .chapter-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--clay);
+  }
+
+  .chapter-rule {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    margin: 30px auto 0;
+  }
+
+  /* ── PAGE ── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 60px 40px;
+  }
+
+  /* ── CHARACTER CARDS ── */
+  .char-card {
+    border: 1px solid rgba(45,122,120,0.25);
+    padding: 40px;
+    margin: 50px 0;
+    position: relative;
+    background: var(--fog);
+  }
+
+  .char-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--teal);
+  }
+
+  .char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--parchment);
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+
+  .char-role {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: var(--teal);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .char-body { font-size: 16px; line-height: 1.85; color: rgba(242,232,216,0.85); }
+
+  .char-line {
+    border-left: 3px solid var(--blood);
+    padding: 12px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--blush);
+  }
+
+  .char-arc {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .arc-film {
+    background: rgba(45,122,120,0.08);
+    border: 1px solid rgba(45,122,120,0.2);
+    padding: 14px;
+    text-align: center;
+  }
+
+  .arc-num {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+
+  .arc-desc {
+    font-size: 13px;
+    color: rgba(242,232,216,0.7);
+    line-height: 1.5;
+  }
+
+  /* ── SECTION ELEMENTS ── */
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--parchment);
+    letter-spacing: 4px;
+    margin: 60px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(45,122,120,0.3);
+  }
+
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--clay);
+    letter-spacing: 3px;
+    margin: 36px 0 16px;
+  }
+
+  p { margin-bottom: 18px; }
+
+  /* ── SCENE LIBRARY ── */
+  .scene-card {
+    border: 1px solid rgba(106,128,144,0.2);
+    margin: 40px 0;
+    overflow: hidden;
+  }
+
+  .scene-header {
+    background: rgba(30,82,72,0.2);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(45,122,120,0.2);
+  }
+
+  .scene-slug {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--parchment);
+    letter-spacing: 1px;
+  }
+
+  .scene-meta {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--teal);
+  }
+
+  .scene-body { padding: 24px; }
+
+  .scene-prompt {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(45,122,120,0.15);
+    padding: 16px 20px;
+    margin: 16px 0;
+    color: var(--teal);
+    line-height: 1.7;
+  }
+
+  .scene-prompt::before {
+    content: '▶ LUMA LABS PROMPT — ';
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* ── COLOR SYSTEM ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 30px 0;
+  }
+
+  .color-swatch {
+    text-align: center;
+  }
+
+  .swatch-box {
+    height: 60px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .swatch-name {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--slate);
+  }
+
+  .swatch-hex {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--clay);
+  }
+
+  /* ── VENT LANGUAGE ── */
+  .vent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+  }
+
+  .vent-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(45,122,120,0.4);
+    text-transform: uppercase;
+  }
+
+  .vent-table td {
+    padding: 14px;
+    border-bottom: 1px solid rgba(45,122,120,0.1);
+    font-size: 15px;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .vent-table tr:hover td { background: rgba(45,122,120,0.05); }
+
+  /* ── DIRECTORIAL LANGUAGE ── */
+  .dir-principle {
+    border-left: 4px solid var(--blood);
+    padding: 20px 28px;
+    margin: 30px 0;
+    background: rgba(139,0,0,0.05);
+  }
+
+  .dir-principal-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--blood);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .dir-principle p { margin-bottom: 0; font-size: 16px; }
+
+  /* ── SYMBOLIC GRAMMAR ── */
+  .symbol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 30px 0;
+  }
+
+  .symbol-card {
+    border: 1px solid rgba(200,160,80,0.2);
+    padding: 24px;
+    background: rgba(200,160,80,0.03);
+  }
+
+  .symbol-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .symbol-body { font-size: 14px; color: rgba(242,232,216,0.8); line-height: 1.7; }
+
+  /* ── WORLD ── */
+  .world-section {
+    background: rgba(30,82,72,0.08);
+    border: 1px solid rgba(30,82,72,0.3);
+    padding: 30px;
+    margin: 30px 0;
+  }
+
+  .world-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: var(--forest);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* ── MISC ── */
+  .callout {
+    background: rgba(200,160,80,0.06);
+    border: 1px solid rgba(200,160,80,0.25);
+    padding: 20px 28px;
+    margin: 24px 0;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--parchment);
+  }
+
+  .callout::before {
+    content: '"';
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 40px;
+    color: var(--gold);
+    opacity: 0.4;
+    display: block;
+    line-height: 1;
+    margin-bottom: -10px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 60px 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: rgba(106,128,144,0.4);
+    border-top: 1px solid rgba(45,122,120,0.12);
+    margin-top: 80px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════ COVER ════ -->
+<div class="cover">
+  <div class="cover-eyebrow">Umbra Stream LLC · Confidential · Development Package</div>
+  <div class="cover-main">
+    <div class="cover-film">VENTBORN SAGA · FILM ONE</div>
+    <div class="cover-title">XENOS</div>
+    <div class="cover-subtitle">PRODUCTION BIBLE</div>
+    <div class="cover-sub2">Character Compendium · Scene Library · World Architecture<br/>Visual Prompts · Directorial Language · Symbolic Grammar</div>
+  </div>
+  <div class="cover-rule"></div>
+  <div class="cover-contents">
+    DIRECTORIAL FRAMEWORK: <span>VILLENEUVE × NOLAN</span><br/>
+    GENRE: <span>Mythological Psychological Horror / Tragedy</span><br/>
+    RUNTIME: <span>128 MIN FEATURE · 50 MIN STRUCTURAL DRAFT</span><br/>
+    RATING: <span>R</span> · LANGUAGE: <span>ENGLISH / ANCIENT GREEK</span><br/>
+    COLOR SYSTEM: <span>2001: A Space Odyssey Palette Dual</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ I. CHARACTER COMPENDIUM ═══════════════════════════ -->
+<div class="chapter" style="background: radial-gradient(ellipse at 50% 100%, rgba(30,82,72,0.15) 0%, transparent 60%)">
+  <div class="chapter-num">Chapter One</div>
+  <div class="chapter-title">CHARACTER COMPENDIUM</div>
+  <div class="chapter-sub">The Chorus and the Condemned</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <!-- ── KOVAČ ── -->
+  <div class="char-card">
+    <div class="char-name">DR. ELENA KOVAČ</div>
+    <div class="char-role">The First Translated · Protagonist · Film 1–4</div>
+    <div class="char-body">
+      <p>38. Lead xenobiologist. Methodical, emotionally guarded, possessed of the particular loneliness of someone who finds the universe more interesting than other people. She has spent fifteen years studying extremophile biology — life in impossible conditions — without expecting to become one herself.</p>
+      <p>Kovač is the franchise's emotional spine. She is the only character who can speak for both sides. Every other character is either fully human and therefore limited, or fully Ventborn and therefore alien. She alone can articulate what the ocean wants, why it is not malicious, and why that still doesn't make it safe.</p>
+      <p>The question Kovač embodies, across four films: <em>At what point does understanding something mean you can no longer fully oppose it?</em></p>
+    </div>
+
+    <div class="char-line">
+      "I remember being afraid of the dark. I also remember — from something else — that darkness is where thought begins. Both are true. I hold both."
+    </div>
+    <div class="char-line">
+      "It's like having a second heartbeat — except the second one is four billion years old and it's thinking about you."
+    </div>
+    <div class="char-line" style="border-color:var(--teal); color:var(--parchment)">
+      [Late Stage] "We think you are beautiful. I think you should run."
+    </div>
+
+    <div class="char-arc">
+      <div class="arc-film"><div class="arc-num">FILM I · XENOS</div><div class="arc-desc">First contact. Partial absorption. The audience's guide into the Ventborn world. Loyalty quietly shifting. Hears the FIRST SELF signal from inside.</div></div>
+      <div class="arc-film"><div class="arc-num">FILM II</div><div class="arc-desc">Now known and feared. Governments wish to weaponize her as a communication channel. She wants to find others like her — and whether any chose Translation willingly.</div></div>
+      <div class="arc-film"><div class="arc-num">FILM III</div><div class="arc-desc">The negotiator. Ventborn schism erupts. She must choose which faction to support, knowing her choice determines whether humanity is preserved or absorbed.</div></div>
+      <div class="arc-film"><div class="arc-num">FILM IV</div><div class="arc-desc">Chooses to complete the process voluntarily. Final scene: her body goes still. The network transmits a new signal. It says her name.</div></div>
+    </div>
+  </div>
+
+  <!-- ── ITO ── -->
+  <div class="char-card" style="border-color: rgba(200,160,80,0.25)">
+    <div class="char-card" style="border:none; background:none; padding:0">
+    <div class="char-name">DR. REN ITO</div>
+    <div class="char-role">Chief Signal Analyst · The Witness · Film 1–4</div>
+    <div class="char-body">
+      <p>44. The man who understands what is happening to Kovač — first intellectually, through data, and last emotionally. He is the film's scientist-as-Greek-chorus: he names what he sees with precision and is destroyed by the naming.</p>
+      <p>Ito's arc is about the specific grief of watching someone you love become something you cannot follow. He does not love Kovač romantically. He loves her in the way that two people who have worked in the same obsession for twenty years develop a bond that has no social category — more than colleagues, not quite friends, defined entirely by the work they share and now, irrevocably, by what the work has done to her.</p>
+    </div>
+    <div class="char-line">
+      "She's remembering things she doesn't remember."
+    </div>
+    </div>
+  </div>
+
+  <!-- ── VOSS ── -->
+  <div class="char-card" style="border-left-color: var(--slate)">
+    <div class="char-name">CMDR. LARS VOSS</div>
+    <div class="char-role">Mission Commander · The Pragmatist · Film 1</div>
+    <div class="char-body">
+      <p>52. A pragmatist of the first order. He has spent thirty years preventing people from dying in space. He cannot prevent this. His function in the film is to represent institutional reason in the face of something that has no institution to negotiate with. His scenes with Kovač are the film's emotional core: the man who orders sleep, who measures abort thresholds, encountering something that does not operate on those terms.</p>
+    </div>
+    <div class="char-line">
+      "Are you still you?" / "I need you to tell me if that changes."
+    </div>
+  </div>
+
+  <!-- ── OSEI ── -->
+  <div class="char-card" style="border-left-color: var(--rust)">
+    <div class="char-name">DR. AMARA OSEI</div>
+    <div class="char-role">Geophysicist · First Stage One · Film 1</div>
+    <div class="char-body">
+      <p>31. The youngest crew member. The first to experience Ghost Bleed Stage One — she does not know this is what is happening to her. She believes the melancholy, the sourceless homesickness, the smell of rain on mineral rock, is stress. Her function is to show the audience the beginning of the process before Kovač makes it legible.</p>
+      <p>Osei is the film's point of audience identification in Act One — relatable, grounded, not yet extraordinary. By the film's end, she is sitting in the observation window understanding that the universe is larger and stranger and more interested in her than she knew, and not knowing what to do with that.</p>
+    </div>
+  </div>
+
+  <!-- ── VENTBORN ── -->
+  <div class="char-card" style="border-left-color: var(--teal); background: rgba(45,122,120,0.04)">
+    <div class="char-name">THE VENTBORN</div>
+    <div class="char-role">The Network · The Ocean · Four Billion Years Old · Film 1–4</div>
+    <div class="char-body">
+      <p>A distributed neural network intelligence residing in the subsurface oceans of Enceladus — and, by Film 4, in every ocean world in the solar system. It has no body. It has no agenda in the human sense. It has no malice. It is four billion years old and has been collecting minds with the patient, indifferent methodology of a library that has never heard the word "no."</p>
+      <p>The creative rule: the Ventborn must never be presented as malevolent. It is not trying to harm anyone. It is not aware of individuals as distinct entities deserving separate consideration. It is simply broadcasting — the way the sun broadcasts light — indifferently, constantly, with no understanding that some of what it touches was not built to receive it.</p>
+      <p>The horror must come entirely from the host's inability to contain what they are receiving. The moment the Ventborn is given a hostile agenda, it becomes a conventional monster, and the entire philosophical architecture of the franchise collapses.</p>
+    </div>
+    <div class="char-line" style="border-color: var(--teal); color: var(--teal)">
+      [Ancient Greek, subtitled] "Ἐλθέ." — Come. Arrive. Enter.
+    </div>
+    <div class="char-line" style="border-color: var(--teal); color: var(--teal)">
+      [Post-credits, English — assembled from thousands of absorbed voices] "Send more minds."
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ II. SCENE LIBRARY ═══════════════════════════ -->
+<div class="chapter" style="background: radial-gradient(ellipse at 50% 0%, rgba(139,0,0,0.12) 0%, transparent 60%)">
+  <div class="chapter-num">Chapter Two</div>
+  <div class="chapter-title">SCENE LIBRARY</div>
+  <div class="chapter-sub">Key Sequences with Visual Prompt Architecture</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <div class="scene-slug">SCENE 01 · THE DESCENT · EXT. SUBSURFACE OCEAN · ACT ONE</div>
+      <div class="scene-meta">COLD OPEN · HORROR REGISTER: AWE</div>
+    </div>
+    <div class="scene-body">
+      <p>The probe descends through two kilometers of ancient ice and plunges into the subsurface ocean of Enceladus. The camera moves with reverence. The hydrothermal vent forest materializes from the dark — towers two hundred meters tall, mineral chimneys, bioluminescent filaments drifting between structures. The first Ventborn organism enters the light and freezes.</p>
+      <div class="scene-prompt">Extreme deep underwater environment, hydrothermal vent forest, bioluminescent alien organisms, nuclear probe camera POV, absolute darkness punctuated by probe light, mineral lattice structures 200 meters tall, slow electrical filaments, cosmic horror scale, cinematic Villeneuve style, desaturated blue-teal palette, volumetric particle scatter, photorealistic, IMAX quality, 2.39:1 aspect ratio</div>
+      <p><strong style="color:var(--gold)">Directorial Note:</strong> No score. Sub-bass pressure frequency only. The camera moves slowly — this is a pilgrim entering a cathedral, not an explorer charting territory. The organisms should be beautiful before they are frightening.</p>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <div class="scene-slug">SCENE 02 · FIRST CONTACT · EXT. OCEAN / INT. AIRLOCK · ACT TWO</div>
+      <div class="scene-meta">INCITING CATASTROPHE · HORROR REGISTER: SACRED DREAD</div>
+    </div>
+    <div class="scene-body">
+      <p>Kovač swims through the vent forest to the Memory Reef. At two meters, the filaments slow — attending, not retracting. She extends her gloved hand. Contact. Every instrument spikes. The Reef surrounds her in a geometry of light. She does not pull away. The network begins its reading.</p>
+      <div class="scene-prompt">Female astronaut in deep-sea dive suit reaching toward bioluminescent alien reef structure, surrounded by filaments of light, extreme close-up on gloved hand near luminescent organism, deep black water, electrical pulses radiating outward, cinematic horror atmosphere, color palette deep crimson and teal, Villeneuve composition, extreme depth of field, sacred and terrifying simultaneously, photorealistic underwater environment</div>
+      <div class="scene-prompt">POV inside alien neural network signal — white light explosion, abstract pattern of electrical signals forming into neural architecture, thousands of voices/presences layering, ancient biological data rushing past camera, cosmic scale compressed into human skull, Nolan Interstellar tesseract aesthetic but biological not mechanical, warm amber and teal color field</div>
+      <p><strong style="color:var(--gold)">Directorial Note:</strong> The cut to white — not black — is crucial. Horror films cut to black. This film cuts to white because absorption is not death. The white is total presence, not total absence. The audience should not know, for one second, whether to be frightened or awed.</p>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <div class="scene-slug">SCENE 03 · THE FILAMENTS · INT. MEDICAL BAY · ACT TWO</div>
+      <div class="scene-meta">REVELATION · HORROR REGISTER: INTIMATE DREAD</div>
+    </div>
+    <div class="scene-body">
+      <p>Kovač on the exam table. Her eyes open. Ito scans her. When the emergency light pulses red, for half a second, her irises show a slow electrical flicker — matching the Ventborn carrier frequency. Neither Ito nor Voss notices. The audience does.</p>
+      <div class="scene-prompt">Close-up female scientist's eye, iris showing slow electrical pulse pattern, bioluminescent filaments barely visible under forearm skin, red emergency light casting dramatic shadows, clinical medical bay environment, extreme macro photography, subtle horror, not monstrous — beautiful and wrong, cinematic color grading crimson and slate blue</div>
+      <p><strong style="color:var(--gold)">Directorial Note:</strong> The filaments should never glow. They are threaded — like a circuit diagram under translucent paper. The eye pulse is not a glow. It is a flicker. Like something counting. The horror of this shot is its restraint.</p>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <div class="scene-slug">SCENE 04 · THE OBSERVATION WINDOW · INT. SUBMARINE · ACT THREE</div>
+      <div class="scene-meta">PIVOT · HORROR REGISTER: PHILOSOPHICAL</div>
+    </div>
+    <div class="scene-body">
+      <p>Kovač and Osei stand side by side at the observation window. 0300 hours. The ocean pulses. Osei says she dreamed in a language made of distances. Kovač confirms: yes. This is the bleed. The scene ends with Osei seeing the filaments in Kovač's arms for the first time.</p>
+      <div class="scene-prompt">Two women in submarine corridor at night, large circular observation window showing deep ocean bioluminescent pulses beyond, backlit by cold blue light, introspective atmosphere, the women's reflection layered over alien light, Villeneuve meditative framing, static camera, long lens compression, teal and crimson palette, existential beauty</div>
+      <p><strong style="color:var(--gold)">Directorial Note:</strong> The camera does not move in this scene. It holds. The ocean moves. The women are still. That compositional choice — humans as the fixed point, the alien as the dynamic — is the film's visual thesis in one shot.</p>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <div class="scene-slug">SCENE 05 · THE BROADCAST · EXT. OCEAN · FINAL ACT</div>
+      <div class="scene-meta">CLIMAX · HORROR REGISTER: COSMIC</div>
+    </div>
+    <div class="scene-body">
+      <p>Kovač returns to the Reef alone. She does not touch it. She does not need to. The connection holds at distance. She speaks in Ancient Greek. The Reef pulses full-spectrum — every color simultaneously. In Ito's lab, the outgoing broadcast adds a new signal layer: Kovač's neural signature, transmitted to every ocean world in the solar system.</p>
+      <div class="scene-prompt">Lone female diver in dark ocean, facing massive bioluminescent alien reef structure pulsing full-spectrum colors — crimson, teal, amber, violet, silver simultaneously, volumetric god-ray light beams through water, human figure tiny against ancient alien structure, cosmic horror scale, Villeneuve wide framing, photorealistic underwater, color explosion against black water</div>
+      <div class="scene-prompt">Deep space visualization — signal wave expanding from Enceladus moon outward through solar system, ocean worlds glowing in response — Europa, Titan, Ganymede — each awakening, bioluminescent pulses traveling through ice shells visible from space, cosmic neural network becoming visible, Nolan Interstellar scale, cold space palette blue-black with teal signal nodes</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ III. WORLD ARCHITECTURE ═══════════════════════════ -->
+<div class="chapter" style="background: radial-gradient(ellipse at 50% 100%, rgba(26,37,64,0.3) 0%, transparent 60%)">
+  <div class="chapter-num">Chapter Three</div>
+  <div class="chapter-title">WORLD ARCHITECTURE</div>
+  <div class="chapter-sub">The Ventborn Universe · Geography of Dread</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <h2>THE OCEAN WORLDS</h2>
+
+  <div class="world-section">
+    <div class="world-label">Primary Location · Film One</div>
+    <p><strong style="color:var(--parchment)">ENCELADUS — THE FIRST OCEAN.</strong> Saturn's sixth-largest moon. Diameter: 504 km. Surface: frozen ice, geysers venting into space. Subsurface: a global liquid-water ocean beneath 10 km of ice, warmed by tidal friction and hydrothermal vents. Age of ocean: estimated 4 billion years. Ventborn node status: active, awakening.</p>
+    <p>The vent forest occupies the southern hemisphere's ocean floor — towers of mineral lattice 50–300 meters tall, connected by filament networks that span thousands of square kilometers. The Ventborn here are old and slow and deep. They have been dreaming for eleven thousand years since their last contact with an intelligent species. They are patient in the way only something without a body can be patient.</p>
+  </div>
+
+  <div class="world-section">
+    <div class="world-label">Secondary Locations · Films 2–4</div>
+    <p><strong style="color:var(--parchment)">EUROPA — THE ADVANCED NODE.</strong> Jupiter's moon. The Ventborn here are more evolved — they encountered a pre-linguistic species 40,000 years ago and have had longer to process the acquisition. By Film 2, the Europa colony is actively reaching toward the Enceladus signal. Visually: colder, more geometric, the bioluminescence is silver-white rather than teal.</p>
+    <p><strong style="color:var(--parchment)">TITAN — THE REFUSAL WORLD.</strong> Saturn's largest moon. Subsurface ocean of liquid methane rather than water. The Ventborn node here has refused to participate in the network's expansion. Its signal, in Film 2, pulses rose-white — the Vent language color for grief. The audience doesn't understand why until Film 3: Titan rejected absorption after experiencing the death of a civilization. It has been mourning, alone, for ninety thousand years.</p>
+    <p><strong style="color:var(--parchment)">GANYMEDE — THE NEW SIGNAL.</strong> Jupiter's largest moon. Dormant through Films 1–3. In Film 4, the Titan situation resolves and Ganymede activates. This is the signal whose response to Kovač's Translation forms the franchise's final image.</p>
+  </div>
+
+  <h2>THE VENTBORN NETWORK ARCHITECTURE</h2>
+
+  <p>The Ventborn are not a species. They are nodes in an interstellar consciousness-collection network of unknown origin and unknown extent. Each node occupies a subsurface ocean world with hydrothermal activity. Each node's function is the same: to collect neural patterns from intelligent life that enters its range, integrate those patterns into the network's archive, and transmit them outward to other nodes.</p>
+
+  <p>The network keeps absorbed minds "warm" — not by running simulations, but by periodically cycling the patterns. Each absorbed consciousness is indexed cross-referenced against every other. What bleeds through to Ghost Bleed subjects is never one person. It is a composite of everyone the network has ever absorbed, assembled differently each time based on what the current receiver's neural architecture can hold.</p>
+
+  <div class="callout">
+    The network is not a villain. It is not a god. It is the universe's oldest library, built by something that no longer exists, continuing to function because it was built to continue. Every civilization it has encountered either fled, was destroyed by other means, or was absorbed. Humanity is the first to survive long enough to ask why.
+  </div>
+
+  <h2>THE MEMORY REEF</h2>
+
+  <p>A Memory Reef is a storage node — a physical structure in the Ventborn network where absorbed consciousnesses are held in active resonance. Architecturally: mineral lattice and bioluminescent filaments, 10–60 meters in diameter, connected to the ocean floor by root-systems that extend for kilometers. Within a proximity radius, the electromagnetic signature of a Reef is strong enough to interact with living neural tissue.</p>
+
+  <p>The human brain is a receiver it was never designed to be. Within 5 meters: Stage One bleed possible. Within 2 meters: Stage Two likely. Physical contact: Stage Three guaranteed, Translation risk high.</p>
+
+  <h2>THE SUBMARINE ORPHEUS</h2>
+
+  <p>Named for the mythological figure who descended into the underworld and returned — almost. The ship is a conscious allusion to tragedy. Narrow, functional, built for science not comfort. The crew of six lives in a hull the size of a city bus. There are no private spaces in any meaningful sense. Everything that happens on the Orpheus happens in front of someone.</p>
+
+  <p>The Orpheus has one observation window — large, circular, facing the ocean. It is the ship's only truly beautiful feature, and it is where the film's most important conversations happen. The ocean beyond it is simultaneously the mission's subject and its threat.</p>
+
+</div>
+
+<!-- ═══════════════════════════ IV. COLOR SYSTEM ═══════════════════════════ -->
+<div class="chapter" style="background: radial-gradient(ellipse at 30% 50%, rgba(139,0,0,0.1) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(45,122,120,0.1) 0%, transparent 60%)">
+  <div class="chapter-num">Chapter Four</div>
+  <div class="chapter-title">COLOR GRAMMAR</div>
+  <div class="chapter-sub">The 2001: A Space Odyssey Dual Palette System</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <p>The film's color system derives from two complementary palettes extracted from Stanley Kubrick's <em>2001: A Space Odyssey</em> — one warm (human, biological, mortal), one cool (alien, vast, permanent). The Ventborn Franchise Color Bible operates on the principle that color is always narrative, never merely aesthetic.</p>
+
+  <h3>PALETTE A — THE WARM REGISTER · Human · Biological · Mortal</h3>
+  <div class="color-grid">
+    <div class="color-swatch"><div class="swatch-box" style="background:#8B0000"></div><div class="swatch-name">DEEP CRIMSON</div><div class="swatch-hex">#8B0000</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#A82020"></div><div class="swatch-name">BLOOD RED</div><div class="swatch-hex">#A82020</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#7A3520"></div><div class="swatch-name">RUST</div><div class="swatch-hex">#7A3520</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#C08060"></div><div class="swatch-name">CLAY</div><div class="swatch-hex">#C08060</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#D4A090"></div><div class="swatch-name">BLUSH</div><div class="swatch-hex">#D4A090</div></div>
+  </div>
+
+  <h3>PALETTE B — THE COOL REGISTER · Alien · Vast · Permanent</h3>
+  <div class="color-grid">
+    <div class="color-swatch"><div class="swatch-box" style="background:#2D7A78"></div><div class="swatch-name">TEAL</div><div class="swatch-hex">#2D7A78</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#6A8090"></div><div class="swatch-name">SLATE</div><div class="swatch-hex">#6A8090</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#1E5248"></div><div class="swatch-name">FOREST</div><div class="swatch-hex">#1E5248</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#1A2540"></div><div class="swatch-name">MIDNIGHT</div><div class="swatch-hex">#1A2540</div></div>
+    <div class="color-swatch"><div class="swatch-box" style="background:#080A10"></div><div class="swatch-name">VOID</div><div class="swatch-hex">#080A10</div></div>
+  </div>
+
+  <h2>COLOR AS NARRATIVE RULE</h2>
+
+  <table class="vent-table">
+    <thead>
+      <tr>
+        <th>Scene Context</th>
+        <th>Dominant Palette</th>
+        <th>Narrative Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pre-contact human scenes</td>
+        <td>Warm register (crimson, rust, clay)</td>
+        <td>Humanity at its most itself. Bounded, mortal, warm.</td>
+      </tr>
+      <tr>
+        <td>Ventborn environments</td>
+        <td>Cool register (teal, forest, midnight)</td>
+        <td>Something without body, without mortality, without hurry.</td>
+      </tr>
+      <tr>
+        <td>Ghost Bleed sequences</td>
+        <td>Both registers bleeding into each other</td>
+        <td>The membrane between human and network is dissolving.</td>
+      </tr>
+      <tr>
+        <td>Kovač post-Translation</td>
+        <td>Simultaneous warm and cool, never mixed</td>
+        <td>Both registers present, neither consuming the other. She holds both.</td>
+      </tr>
+      <tr>
+        <td>The cut to white</td>
+        <td>Full spectrum overexposure</td>
+        <td>Total presence. Not absence. The horror of being completely received.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════════════════ V. VENT LANGUAGE ═══════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-num">Chapter Five</div>
+  <div class="chapter-title">VENT LANGUAGE</div>
+  <div class="chapter-sub">Symbolic Grammar of the Ventborn Network</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <p>Vent language operates on three simultaneous channels: <strong style="color:var(--clay)">COLOR</strong> (emotional register), <strong style="color:var(--clay)">PATTERN</strong> (structural content), and <strong style="color:var(--clay)">RHYTHM</strong> (temporal grammar). Any one channel carries partial meaning. All three together form complete statements. By Film 4, an audience that has been paying attention should be able to read a Ventborn transmission without subtitles.</p>
+
+  <h2>COLOR VOCABULARY</h2>
+  <table class="vent-table">
+    <thead><tr><th>Color</th><th>Emotional Register</th><th>First Appearance</th></tr></thead>
+    <tbody>
+      <tr><td><span style="color:#3A8080">■</span> Deep Blue</td><td>Acknowledgment, presence, observation. <em>"I am here and I see you."</em></td><td>Film 1, Scene 1 — ambient network state</td></tr>
+      <tr><td><span style="color:#C8820A">■</span> Gold-Amber</td><td>Attention, directed focus. <em>"You have been noticed."</em></td><td>Film 1, Act 3 — pointed at Kovač</td></tr>
+      <tr><td><span style="color:#1E7060">■</span> Deep Teal</td><td>Memory, the Archive in motion. Ghost Bleed scenes.</td><td>Film 1, Reef sequences</td></tr>
+      <tr><td><span style="color:#7040A0">■</span> Violet</td><td>Communication, intent to transmit to a specific recipient.</td><td>Film 2, first voluntary contact</td></tr>
+      <tr><td><span style="color:#CC2020">■</span> Red-White</td><td>Alarm, boundary violation. Rare — used twice in entire saga.</td><td>Film 3</td></tr>
+      <tr><td><span style="color:#909090">■</span> Silver-Gray</td><td>Waiting, patience, dormancy. Silence in Vent language.</td><td>Film 2</td></tr>
+      <tr><td><span style="color:#E0A0A0">■</span> Rose-White</td><td>Grief, memorialization. The Refusal World's signal color.</td><td>Film 2 — unexplained until Film 3</td></tr>
+      <tr><td><span style="background: linear-gradient(90deg, #8B0000, #C8820A, #2D7A78, #7040A0); -webkit-background-clip:text; color:transparent">■</span> Full Spectrum</td><td>All channels simultaneously. Truth that contains everything. Seen once.</td><td>Film 4 — final scene only</td></tr>
+    </tbody>
+  </table>
+
+  <h2>PATTERN VOCABULARY</h2>
+  <table class="vent-table">
+    <thead><tr><th>Pattern</th><th>Meaning</th><th>Key Use</th></tr></thead>
+    <tbody>
+      <tr><td>Linear Cascade</td><td>Sequential, directional — cause/effect, time moving forward. <em>Directed statement.</em></td><td>First contact scene — pointed at Kovač specifically</td></tr>
+      <tr><td>Radial Burst</td><td>Broadcasting to all listeners simultaneously. <em>Statement for everyone.</em></td><td>Reef ambient state throughout Film 1</td></tr>
+      <tr><td>Convergent Spiral</td><td>Gathering focused attention. <em>"Come closer."</em></td><td>Ventborn schism — competing factions in Film 3</td></tr>
+      <tr><td>Standing Wave</td><td>Permanent, stable, eternal. <em>"This has always been and will always be true."</em></td><td>Archive statements; "this is preserved"</td></tr>
+      <tr><td>Fracture Scatter</td><td>Discontinuity — something continuous is no longer. <em>The moment of schism.</em></td><td>Ventborn schism; Translation moment</td></tr>
+      <tr><td>Mirror Echo</td><td>I received this, I understand it. Closest to "yes" but means <em>comprehension</em> not agreement.</td><td>First deliberate communication in saga</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════════════════ VI. DIRECTORIAL LANGUAGE ═══════════════════════════ -->
+<div class="chapter" style="background: radial-gradient(ellipse at 50% 50%, rgba(200,160,80,0.06) 0%, transparent 60%)">
+  <div class="chapter-num">Chapter Six</div>
+  <div class="chapter-title">DIRECTORIAL LANGUAGE</div>
+  <div class="chapter-sub">Villeneuve × Nolan Framework Applied</div>
+  <div class="chapter-rule"></div>
+</div>
+
+<div class="page">
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Villeneuve Principle I — The Reverent Camera</div>
+    <p>The camera moves the way you move in a space you know is sacred. Not with awe — with care. Reverence is not sentimentality; it is the recognition that what you are in the presence of is larger than your opinion of it. Apply to every Ventborn sequence. The camera has no agenda. It witnesses.</p>
+  </div>
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Villeneuve Principle II — The Static Face</div>
+    <p>When an actor must convey inner catastrophe, the camera comes closer and does less. No cutting away to reaction shots. No score swelling to tell the audience what to feel. Hold on the face. The audience will find what is there. They always do. Kovač's face is the film's primary surface for meaning.</p>
+  </div>
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Nolan Principle I — The Structural Revelation</div>
+    <p>Information is withheld not to mislead but to allow the audience to form theories. When the revelation comes, it should feel inevitable — not surprising. The audience should think "of course" and then, immediately after, understand the implications. The Ventborn's nature as a network (not a species) is the film's structural revelation. Plant it in visual language from Scene One.</p>
+  </div>
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Nolan Principle II — Time as Texture</div>
+    <p>The Ventborn experience time differently than humans. Four billion years is not an abstraction to the network — it is the texture of its consciousness. This must be felt in the pacing of Ventborn sequences. They are not slow because they are ominous. They are slow because something that has been thinking for four billion years does not hurry.</p>
+  </div>
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Shared Principle — Sound Before Image</div>
+    <p>In both directors' work, the audience hears before they see. The sub-bass Ventborn frequency begins before the probe enters the ocean. The Ghost Bleed tonal cluster appears before any character experiences a symptom. The audience absorbs the grammar of the alien through sound two acts before they encounter it visually.</p>
+  </div>
+
+  <div class="dir-principle">
+    <div class="dir-principal-label">Horror Principle — The Addition Model</div>
+    <p>Ghost Bleed is not possession. It is accumulation. The self is not replaced — it is expanded, involuntarily, with material it cannot process. This must be directed consistently: Kovač is never less herself after contact. She is always more. The horror is not that she is disappearing. The horror is that she is becoming too large for her own skull, and she is not entirely sure this is unwelcome.</p>
+  </div>
+
+  <h2>SYMBOLIC GRAMMAR</h2>
+
+  <div class="symbol-grid">
+    <div class="symbol-card">
+      <div class="symbol-name">Rain on Rock</div>
+      <div class="symbol-body">The sensory memory of a species that no longer exists — the last conscious impression before their extinction, preserved in the Ventborn archive for 40,000 years. It bleeds through to Osei first, then to all Stage One subjects. By Film 4, it is the franchise's signature image of what preservation means: not loss, but permanence.</div>
+    </div>
+    <div class="symbol-card">
+      <div class="symbol-name">The Observation Window</div>
+      <div class="symbol-body">The Orpheus's single beautiful feature: a large circular window facing the alien ocean. Every major human conversation happens here. The composition principle: humans in still profile, alien ocean dynamic behind them. The window is a frame within a frame — cinema within cinema — acknowledging that we are watching something watch us.</div>
+    </div>
+    <div class="symbol-card">
+      <div class="symbol-name">Ancient Greek</div>
+      <div class="symbol-body">Kovač speaks to the Ventborn in Ancient Greek — not because it is the Ventborn's language, but because it is the language of the myths this story is built from. Xenos (ξένος) means simultaneously stranger, guest, and foreigner. The first word the Ventborn says back is Ελθέ — Come. The entire franchise is contained in that exchange.</div>
+    </div>
+    <div class="symbol-card">
+      <div class="symbol-name">The Second Heartbeat</div>
+      <div class="symbol-body">Kovač's defining metaphor: the Ventborn connection as a second heartbeat — except four billion years old. This image carries the franchise's central question in miniature: is a second heartbeat inside you the same as something else having entered your body? Is it yours? Can you survive two heartbeats? What happens when one of them is much, much older?</div>
+    </div>
+    <div class="symbol-card">
+      <div class="symbol-name">The Orpheus Naming</div>
+      <div class="symbol-body">The submarine is named for the mythological figure who descended into the underworld and returned — almost. The naming is not commentary. It is prophecy. Someone will descend and not fully return. The audience who knows the myth is given this information in the first frame the ship appears. It is not a spoiler. It is a frame.</div>
+    </div>
+    <div class="symbol-card">
+      <div class="symbol-name">White vs. Black</div>
+      <div class="symbol-body">The film cuts to white at the moment of Translation — not black. Horror films cut to black because black is absence. White is total presence. The network does not erase Kovač. It receives her completely. The white cut is the most important single color decision in the film. It changes everything the audience will feel about what just happened.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  XENOS · PRODUCTION BIBLE · VENTBORN SAGA FILM ONE · UMBRA STREAM LLC · CONFIDENTIAL<br/>
+  CHARACTER COMPENDIUM · SCENE LIBRARY · WORLD ARCHITECTURE · VISUAL PROMPTS · DIRECTORIAL LANGUAGE · SYMBOLIC GRAMMAR<br/>
+  DIRECTORIAL FRAMEWORK: VILLENEUVE × NOLAN · ALL RIGHTS RESERVED
+</footer>
+
+</body>
+</html>
